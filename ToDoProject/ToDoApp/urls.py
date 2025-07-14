@@ -1,3 +1,4 @@
+from os import name
 from django.contrib import admin
 from django.urls import path
 
@@ -8,4 +9,5 @@ urlpatterns = [
     path("get-all-tasks/", get_all_tasks, name="get-all-tasks"),
     path("get-done-tasks/", get_done_tasks, name="get-done-tasks"),
     path("get-pending-tasks/", get_pending_tasks, name="get-pending-tasks"),
+    path("delete-task/<str:name>",delete_task,name="delete-task"),
 ]

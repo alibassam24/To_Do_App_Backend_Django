@@ -60,5 +60,12 @@ def get_pending_tasks(request):
         return Response({"Status": "Failed", "Message": "No Record Found"})
 
 @api_view(['DELETE'])
-def delete_task(request):
-    pass
+def delete_task(request,name):    
+    try:
+        t=Task.objects.get(name=name)
+        t.delete()
+        return Response({"Status":"Success","Message":"Record Deleted Successfully"})
+    except Task.DoesNotExist:
+        return Response({"Status":"Failed","Message":"Record Not Found"})
+
+

@@ -3,7 +3,7 @@ from rest_framework import  views, response
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Task
-from .serializers import TaskSerialzer
+from .serializers import TaskSerializer
 
 
 # Create your views here.
@@ -17,7 +17,7 @@ from .serializers import TaskSerialzer
 """
 @api_view(['POST'])
 def save_task(request):
-    serializer=TaskSerialzer(data=request.data)
+    serializer=TaskSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"Status":"Success","Message":"Task Created","Data":serializer.data})
@@ -28,6 +28,18 @@ def save_task(request):
 def get_all_tasks(request):
     t=Task.objects.all()
     
-    serializer=TaskSerialzer(t, many=True)
+    serializer=TaskSerializer(t, many=True)
 
     return Response({"Status":"Success","Data":serializer.data})
+
+@api_view(['GET']) 
+def get_done_tasks(request):
+    t=Task.objects.filter(isDone=True)
+    
+
+    if t.exists():
+        serializer=TaskSerializer(t,many=True)
+        return Response({"Status":"Success","Data":serializer.data})
+
+    else:
+        return Response({"Status":"Failed","Message":"No Record Found"})    

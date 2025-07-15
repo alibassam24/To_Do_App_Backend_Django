@@ -25,6 +25,6 @@ A simple Django REST Framework-based API for managing tasks in a todo list.
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Dev 
 -->Ali Basssam 
 -->alibassam03@gmail.com

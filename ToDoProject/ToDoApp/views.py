@@ -14,7 +14,8 @@ from .serializers import TaskSerializer
     "description":"Create first Django project"
 
 }
-"""         
+"""
+
 
 @api_view(["POST"])
 def save_task(request):
@@ -48,6 +49,7 @@ def get_done_tasks(request):
     else:
         return Response({"Status": "Failed", "Message": "No Record Found"})
 
+
 @api_view(["GET"])
 def get_pending_tasks(request):
     t = Task.objects.filter(isDone=False)
@@ -59,54 +61,69 @@ def get_pending_tasks(request):
     else:
         return Response({"Status": "Failed", "Message": "No Record Found"})
 
-@api_view(['DELETE'])
-def delete_task(request,name):    
+
+@api_view(["DELETE"])
+def delete_task(request, name):
     try:
-        t=Task.objects.get(name=name)
+        t = Task.objects.get(name=name)
         t.delete()
-        return Response({"Status":"Success","Message":"Record Deleted Successfully"})
+        return Response({"Status": "Success", "Message": "Record Deleted Successfully"})
     except Task.DoesNotExist:
-        return Response({"Status":"Failed","Message":"Record Not Found"})
+        return Response({"Status": "Failed", "Message": "Record Not Found"})
 
-#mark task as done
-@api_view(['POST'])
-def task_completed(request,id):
+
+# mark task as done
+@api_view(["POST"])
+def task_completed(request, id):
     try:
-      t=Task.objects.get(id=id)
-      t.isDone= True
-      serializer=TaskSerializer(t)
-      t.save()
-      return Response({"Status":"Success","Message":"Task Marked as Done","Data":serializer.data})
+        t = Task.objects.get(id=id)
+        t.isDone = True
+        serializer = TaskSerializer(t)
+        t.save()
+        return Response(
+            {
+                "Status": "Success",
+                "Message": "Task Marked as Done",
+                "Data": serializer.data,
+            }
+        )
     except Task.DoesNotExist:
-      return Response({"Status":"Failed","Message":"No such Task Found"})  
+        return Response({"Status": "Failed", "Message": "No such Task Found"})
 
-@api_view(['POST'])
-def task_due(request,id):
+
+@api_view(["POST"])
+def task_due(request, id):
     try:
-      t=Task.objects.get(id=id)
-      t.isDone= False
-      serializer=TaskSerializer(t)
-      t.save()
-      return Response({"Status":"Success","Message":"Task Marked as Due","Data":serializer.data})
+        t = Task.objects.get(id=id)
+        t.isDone = False
+        serializer = TaskSerializer(t)
+        t.save()
+        return Response(
+            {
+                "Status": "Success",
+                "Message": "Task Marked as Due",
+                "Data": serializer.data,
+            }
+        )
     except Task.DoesNotExist:
-      return Response({"Status":"Failed","Message":"No such Task Found"})  
+        return Response({"Status": "Failed", "Message": "No such Task Found"})
 
 
-#Update data
-#PUT,PATCH
+# Update data
+# PUT,PATCH
 
-@api_view(['PUT'])
-def update_task(request,id):
+
+@api_view(["PUT"])
+def update_task(request, id):
     try:
-        t=Task.objects.get(id=id)
+        t = Task.objects.get(id=id)
     except Task.DoesNotExist:
-        return Response({"Status":"Failed","Message":"No Task with given id Found"})  
-    serializer=TaskSerializer(t,data=request.data)
+        return Response({"Status": "Failed", "Message": "No Task with given id Found"})
+    serializer = TaskSerializer(t, data=request.data)
     if serializer.is_valid():
-       t.save()
-       return Response({"Status":"Success","Message":"Task Updated","Data":serializer.data})
+        t.save()
+        return Response(
+            {"Status": "Success", "Message": "Task Updated", "Data": serializer.data}
+        )
     else:
-       return Response({"Status":"Failed","Message":"Invalid Data"})
-
-
-    
+        return Response({"Status": "Failed", "Message": "Invalid Data"})
